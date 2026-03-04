@@ -27,9 +27,9 @@
 							<div class="inner">
 								<h1>Martin Kašpar</h1>
 								<p>Animation &middot; Game Design &middot; Story &middot; Précisément &middot; Passion</p>
-								<blockquote class="hero-quote">
-    								<p><em>"You talk the talk. Do you walk the walk?"</em></p>
-    								<footer>— Animal Mother, <cite><a href="https://www.imdb.com/title/tt0093058/">Full Metal Jacket</a></cite></footer>
+								<blockquote class="hero-quote" id="rotating-quote">
+								<p><em></em></p>
+								<footer>— <span class="author"></span>, <cite><a href="#" target="_blank"></a></cite></footer>
 								</blockquote>
 							</div>
 						</div>
@@ -119,15 +119,18 @@
 									<h4>Blockquote</h4>
 									<blockquote>Fringilla nisl. Donec accumsan interdum nisi, quis tincidunt felis sagittis eget tempus euismod. Vestibulum ante ipsum primis in faucibus vestibulum. Blandit adipiscing eu felis iaculis volutpat ac adipiscing accumsan faucibus. Vestibulum ante ipsum primis in faucibus lorem ipsum dolor sit amet nullam adipiscing eu felis.</blockquote>
 									<h4>Preformatted</h4>
-									<pre><code>i = 0;
+									<pre><code>
+										i = 0;
 
-while (!deck.isInOrder()) {
-    print 'Iteration ' + i;
-    deck.shuffle();
-    i++;
-}
 
-print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
+										while (!deck.isInOrder()) {
+											print 'Iteration ' + i;
+											deck.shuffle();
+											i++;
+										}
+
+										print 'It took ' + i + ' iterations to sort the deck.';
+									</code></pre>
 								</section>
 
 								<section>
@@ -362,4 +365,120 @@ print 'It took ' + i + ' iterations to sort the deck.';</code></pre>
 			<script src="assets/js/main.js"></script>
 
 	</body>
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+
+			const quotes = [
+				{
+					text: "You talk the talk. Do you walk the walk?",
+					author: "Animal Mother",
+					source: "Full Metal Jacket",
+					link: "https://www.imdb.com/title/tt0093058/"
+				},
+				{
+					text: "The mystery of life isn't a problem to solve, but a reality to experience.",
+					author: "Frank Herbert",
+					source: "Dune",
+					link: "https://en.wikipedia.org/wiki/Frank_Herbert"
+				},
+				{
+					text: "It is only with the heart that one can see rightly; what is essential is invisible to the eye.",
+					author: "Antoine de Saint-Exupéry",
+					source: "The Little Prince",
+					link: "https://en.wikipedia.org/wiki/Antoine_de_Saint-Exup%C3%A9ry"
+				},
+				{
+					text: "Success is not final, failure is not fatal: it is the courage to continue that counts.",
+					author: "Winston Churchill",
+					source: "Inspirational paraphrase",
+					link: "https://en.wikipedia.org/wiki/Winston_Churchill"
+				},
+				{
+					text: "Creativity is intelligence having fun.",
+					author: "Albert Einstein",
+					source: "Attributed quotation",
+					link: "https://en.wikipedia.org/wiki/Albert_Einstein"
+				},
+				{
+					text: "Speak less, build more, and let the work speak for itself.",
+					author: "Marcus Aurelius",
+					source: "Stoic-inspired paraphrase",
+					link: "https://en.wikipedia.org/wiki/Marcus_Aurelius"
+				},
+				{
+					text: "Sometimes the solution is not loud — it is simply correct.",
+					author: "Alan Turing",
+					source: "Interpretive attribution",
+					link: "https://en.wikipedia.org/wiki/Alan_Turing"
+				},
+				{
+					text: "Life is either a daring adventure or nothing at all.",
+					author: "Helen Keller",
+					source: "Attributed quotation",
+					link: "https://en.wikipedia.org/wiki/Helen_Keller"
+				},
+				{
+					text: "Somewhere, something incredible is waiting to be known.",
+					author: "Carl Sagan",
+					source: "Attributed quotation",
+					link: "https://en.wikipedia.org/wiki/Carl_Sagan"
+				}
+			];
+
+			const box = document.getElementById("rotating-quote");
+			if (!box) return;
+
+			const em = box.querySelector("em");
+			const author = box.querySelector(".author");
+			const cite = box.querySelector("cite a");
+
+			let index = 0;
+			const FADE_TIME = 900;
+			const HOLD_TIME = 10000;
+
+			function renderQuote(q) {
+				em.textContent = `"${q.text}"`;
+				author.textContent = q.author;
+				cite.textContent = q.source;
+				cite.href = q.link;
+			}
+
+			function scheduleRotation() {
+
+				const start = performance.now();
+
+				function tick(now) {
+
+					const elapsed = now - start;
+
+					if (elapsed >= HOLD_TIME) {
+
+						box.style.opacity = "0";
+
+						setTimeout(() => {
+
+							index = (index + 1) % quotes.length;
+							renderQuote(quotes[index]);
+
+							box.style.opacity = "1";
+
+							scheduleRotation();
+
+						}, FADE_TIME);
+
+						return;
+					}
+
+					requestAnimationFrame(tick);
+				}
+
+				requestAnimationFrame(tick);
+			}
+
+			// Initial state
+			renderQuote(quotes[index]);
+			scheduleRotation();
+
+		});
+	</script>
 </html>
