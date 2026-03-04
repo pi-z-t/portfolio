@@ -6,7 +6,7 @@
 	font-style: normal;
 }
 
-body, h1, h2, h3, p, input, blockquote {
+body, h1, h2, h3, p, input, textarea, select, button blockquote {
 	font-family: "Urania Czech", sans-serif;
 }
 
