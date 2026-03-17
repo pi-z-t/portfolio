@@ -80,6 +80,11 @@ a:focus {
     margin: 0 auto !important;
 }
 
+#header nav ul li a 
+{
+	min-width: 8rem;
+}
+
 .hero-quote {
     width: 800px;
     height: 150px;
